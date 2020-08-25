@@ -41,6 +41,21 @@ const useStyle = makeStyles((theme) => ({
       backgroundColor: "transparent",
     },
   },
+  menu: {
+    backgroundColor: theme.palette.primary.main,
+    color: "white",
+    padding: "0",
+    marginTop: "4.15em",
+    borderRadius: 0,
+  },
+  menuItem: {
+    ...theme.typography.tab,
+    opacity: 0.7,
+    "&:hover": {
+      opacity: 1,
+      backgroundColor: theme.palette.primary.light,
+    },
+  },
 }));
 
 function ElevationScroll(props) {
@@ -62,6 +77,7 @@ const Header = (props) => {
   const [value, setValue] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
     switch (window.location.pathname) {
@@ -80,8 +96,26 @@ const Header = (props) => {
       case "/contactus":
         value !== 4 && setValue(4);
         break;
+      case "/customsoftware":
+        if (value !== 1) {
+          setValue(1);
+          setSelectedIndex(0);
+        }
+        break;
+      case "/mobileapps":
+        if (value !== 1) {
+          setValue(1);
+          setSelectedIndex(1);
+        }
+        break;
+      case "/websites":
+        if (value !== 2) {
+          setValue(1);
+          setSelectedIndex(2);
+        }
+        break;
       default:
-        setValue(0);
+        break;
     }
     return () => {};
   }, [value]);
@@ -97,8 +131,18 @@ const Header = (props) => {
   const handleClose = (e) => {
     setAnchorEl(null);
     setOpen(false);
+    setValue(1);
   };
-
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index);
+    setAnchorEl(null);
+    setOpen(false);
+  };
+  const options = [
+    { link: "/customsoftware", text: "Custom Softwares Development" },
+    { link: "/mobileapps", text: "Mobile Applications Development" },
+    { link: "/websites", text: "Websites Development" },
+  ];
   return (
     <React.Fragment>
       <ElevationScroll>
@@ -166,13 +210,27 @@ const Header = (props) => {
               keepMounted
               open={open}
               onClose={handleClose}
+              elevation={0}
+              classes={{ paper: classes.menu }}
               MenuListProps={{ onMouseLeave: handleClose }}
             >
-              <MenuItem onClick={handleClose}>
-                Custom Software Development
-              </MenuItem>
-              <MenuItem onClick={handleClose}>Application Development</MenuItem>
-              <MenuItem onClick={handleClose}>Website Development</MenuItem>
+              {options.map((option, i) => {
+                return (
+                  <MenuItem
+                    key={option}
+                    classes={{ root: classes.menuItem }}
+                    selected={i === selectedIndex && value === 1}
+                    onClick={(event) => {
+                      handleMenuItemClick(event, i);
+                      handleClose();
+                    }}
+                    component={Link}
+                    to={option.link}
+                  >
+                    {option.text}
+                  </MenuItem>
+                );
+              })}
             </Menu>
           </Toolbar>
         </AppBar>

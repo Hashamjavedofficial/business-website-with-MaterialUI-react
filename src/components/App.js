@@ -16,7 +16,7 @@ class App extends Component {
           <Route
             exact
             path="/customsoftware"
-            render={<div>Custom Software</div>}
+            render={() => <div>Custom Software</div>}
           />
           <Route
             exact
