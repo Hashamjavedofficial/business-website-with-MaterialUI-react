@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 
 import Header from "./ui/Header";
 import theme from "./ui/Theme";
+import Footer from "./ui/Footer";
 
 class App extends Component {
   render() {
@@ -11,7 +12,11 @@ class App extends Component {
       <ThemeProvider theme={theme}>
         <Header />
         <Switch>
-          <Route exact path="/" render={() => <div>Home</div>} />
+          <Route
+            exact
+            path="/"
+            render={() => <div style={{ height: "100vh" }}>Home</div>}
+          />
           <Route exact path="/services" render={() => <div>Services</div>} />
           <Route
             exact
@@ -32,6 +37,7 @@ class App extends Component {
           <Route exact path="/contactus" render={() => <div>Contact Us</div>} />
           <Route exact path="/aboutus" render={() => <div>About Us</div>} />
         </Switch>
+        <Footer />
       </ThemeProvider>
     );
   }
